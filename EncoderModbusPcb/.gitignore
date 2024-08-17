@@ -1,0 +1,11 @@
+# don't version source generated files for now
+
+# folders at this point 
+/board
+/CMSIS
+component/
+device/
+drivers/
+middleware/
+startup/
+utilities/
