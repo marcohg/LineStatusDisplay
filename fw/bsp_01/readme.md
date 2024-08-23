@@ -15,4 +15,6 @@ Note:  Newlib (none) fails to provide ->  _close, _fstat,
     - DE using RTS
     - Idle interrupt
 
+Is acceptable to have TX blocking.
+
 
