@@ -12,6 +12,7 @@
 #include "fsl_common.h"
 #include "fsl_uart.h"
 #include "fsl_clock.h"
+#include "fsl_pit.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -33,11 +34,33 @@ extern "C" {
 #define UART0_SERIAL_ERROR_IRQN UART0_ERR_IRQn
 /* UART0 interrupt handler identifier. */
 #define UART0_SERIAL_ERROR_IRQHANDLER UART0_ERR_IRQHandler
+/* BOARD_InitPeripherals defines for PIT */
+/* Definition of peripheral ID. */
+#define PIT_PERIPHERAL PIT
+/* Definition of clock source. */
+#define PIT_CLOCK_SOURCE kCLOCK_BusClk
+/* Definition of clock source frequency. */
+#define PIT_CLK_FREQ CLOCK_GetFreq(PIT_CLOCK_SOURCE)
+/* Definition of ticks count for channel 0 - deprecated. */
+#define PIT_0_TICKS USEC_TO_COUNT(5000U, PIT_CLK_FREQ)
+/* PIT interrupt vector ID (number) - deprecated. */
+#define PIT_0_IRQN PIT0_IRQn
+/* PIT interrupt handler identifier - deprecated. */
+#define PIT_0_IRQHANDLER PIT0_IRQHandler
+/* Definition of channel number for channel 0. */
+#define PIT_CHANNEL_0 kPIT_Chnl_0
+/* Definition of ticks count for channel 0. */
+#define PIT_CHANNEL_0_TICKS USEC_TO_COUNT(5000U, PIT_CLK_FREQ)
+/* PIT interrupt vector ID (number). */
+#define PIT_CHANNEL_0_IRQN PIT0_IRQn
+/* PIT interrupt handler identifier. */
+#define PIT_CHANNEL_0_IRQHANDLER PIT0_IRQHandler
 
 /***********************************************************************************************************************
  * Global variables
  **********************************************************************************************************************/
 extern const uart_config_t UART0_config;
+extern const pit_config_t PIT_config;
 
 /***********************************************************************************************************************
  * Initialization functions

@@ -49,7 +49,7 @@ pin_labels:
 - {pin_num: '59', pin_signal: PTD2/LLWU_P13/SPI0_SOUT/UART2_RX/FTM3_CH2/FB_AD4/LPUART0_RX/I2C0_SCL, label: 'J1[2]/J8[P3]/uSD_SPI_MOSI', identifier: SD_CARD_CMD}
 - {pin_num: '60', pin_signal: PTD3/SPI0_SIN/UART2_TX/FTM3_CH3/FB_AD3/LPUART0_TX/I2C0_SDA, label: 'J1[4]/J8[P7]/SPI0_SIN/uSD_SPI_MISO', identifier: SD_CARD_DAT0}
 - {pin_num: '61', pin_signal: PTD4/LLWU_P14/SPI0_PCS1/UART0_RTS_b/FTM0_CH4/FB_AD2/EWM_IN/SPI1_PCS0, label: 'J2[6]/SPI0_PCS1/LLWU_P14', identifier: RF_CS}
-- {pin_num: '62', pin_signal: ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FB_AD1/EWM_OUT_b/SPI1_SCK, label: 'J2[12]/BLUE_LED', identifier: LEDRGB_BLUE}
+- {pin_num: '62', pin_signal: ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FB_AD1/EWM_OUT_b/SPI1_SCK, label: 'J2[12]/BLUE_LED', identifier: LEDRGB_BLUE;TPA}
 - {pin_num: '63', pin_signal: ADC0_SE7b/PTD6/LLWU_P15/SPI0_PCS3/UART0_RX/FTM0_CH6/FB_AD0/FTM0_FLT0/SPI1_SOUT, label: 'J2[8]'}
 - {pin_num: '64', pin_signal: PTD7/UART0_TX/FTM0_CH7/FTM0_FLT1/SPI1_SIN, label: 'J2[10]'}
 - {pin_num: '1', pin_signal: ADC1_SE4a/PTE0/CLKOUT32K/SPI1_PCS1/UART1_TX/I2C1_SDA/RTC_CLKOUT, label: 'J2[18]/UART1_TX_TGTMCU', identifier: DEBUG_UART_TX;RTC_CLKOUT;CLKOUT32K}
@@ -109,6 +109,7 @@ BOARD_InitPins:
   - {pin_num: '61', peripheral: UART0, signal: RTS, pin_signal: PTD4/LLWU_P14/SPI0_PCS1/UART0_RTS_b/FTM0_CH4/FB_AD2/EWM_IN/SPI1_PCS0}
   - {pin_num: '23', peripheral: UART0, signal: RX, pin_signal: PTA1/UART0_RX/FTM0_CH6/JTAG_TDI/EZP_DI, identifier: ''}
   - {pin_num: '24', peripheral: UART0, signal: TX, pin_signal: PTA2/UART0_TX/FTM0_CH7/JTAG_TDO/TRACE_SWO/EZP_DO, identifier: ''}
+  - {pin_num: '62', peripheral: GPIOD, signal: 'GPIO, 5', pin_signal: ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FB_AD1/EWM_OUT_b/SPI1_SCK, identifier: TPA, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -126,6 +127,13 @@ void BOARD_InitPins(void)
     /* Port D Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortD);
 
+    gpio_pin_config_t TPA_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PTD5 (pin 62)  */
+    GPIO_PinInit(BOARD_TPA_GPIO, BOARD_TPA_PIN, &TPA_config);
+
     /* PORTA1 (pin 23) is configured as UART0_RX */
     PORT_SetPinMux(PORTA, 1U, kPORT_MuxAlt2);
 
@@ -134,6 +142,9 @@ void BOARD_InitPins(void)
 
     /* PORTD4 (pin 61) is configured as UART0_RTS_b */
     PORT_SetPinMux(BOARD_RF_CS_PORT, BOARD_RF_CS_PIN, kPORT_MuxAlt3);
+
+    /* PORTD5 (pin 62) is configured as PTD5 */
+    PORT_SetPinMux(BOARD_TPA_PORT, BOARD_TPA_PIN, kPORT_MuxAsGpio);
 
     SIM->SOPT5 = ((SIM->SOPT5 &
                    /* Mask bits to zero which are setting */
@@ -153,8 +164,8 @@ BOARD_InitLEDsPins:
     open_drain: disable, pull_select: down, pull_enable: disable}
   - {pin_num: '24', peripheral: GPIOA, signal: 'GPIO, 2', pin_signal: PTA2/UART0_TX/FTM0_CH7/JTAG_TDO/TRACE_SWO/EZP_DO, direction: OUTPUT, gpio_init_state: 'true',
     slew_rate: slow, open_drain: disable, pull_select: down, pull_enable: disable}
-  - {pin_num: '62', peripheral: GPIOD, signal: 'GPIO, 5', pin_signal: ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FB_AD1/EWM_OUT_b/SPI1_SCK, direction: OUTPUT,
-    gpio_init_state: 'true', slew_rate: slow, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable}
+  - {pin_num: '62', peripheral: GPIOD, signal: 'GPIO, 5', pin_signal: ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/FB_AD1/EWM_OUT_b/SPI1_SCK, identifier: LEDRGB_BLUE,
+    direction: OUTPUT, gpio_init_state: 'true', slew_rate: slow, open_drain: disable, drive_strength: low, pull_select: down, pull_enable: disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */

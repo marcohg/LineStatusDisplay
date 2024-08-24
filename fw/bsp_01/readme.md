@@ -13,8 +13,11 @@ Note:  Newlib (none) fails to provide ->  _close, _fstat,
 - Test encoder counter hardware
 - Test Modbus UART0 
     - DE using RTS
-    - Idle interrupt
+    - Idle interrupt. Removed, as it only provides 10, 11 bits delay.
+    - Add a PIT ch0 to control frame receive, fixed to 5ms for now
+
 
 Is acceptable to have TX blocking.
 
-
+ABCDEF
+12345

@@ -71,6 +71,7 @@ instance:
   - nvic:
     - interrupt_table:
       - 0: []
+      - 1: []
     - interrupts: []
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
@@ -106,7 +107,7 @@ instance:
       - matchAddress2: '0'
       - txFifoWatermark: '0'
       - rxFifoWatermark: '1'
-      - idleType: 'kUART_IdleTypeStartBit'
+      - idleType: 'kUART_IdleTypeStopBit'
       - enableTx: 'true'
       - enableRx: 'true'
   - interruptsCfg:
@@ -133,7 +134,7 @@ const uart_config_t UART0_config = {
   .parityMode = kUART_ParityDisabled,
   .txFifoWatermark = 0U,
   .rxFifoWatermark = 1U,
-  .idleType = kUART_IdleTypeStartBit,
+  .idleType = kUART_IdleTypeStopBit,
   .enableTx = true,
   .enableRx = true
 };
@@ -146,12 +147,63 @@ static void UART0_init(void) {
 }
 
 /***********************************************************************************************************************
+ * PIT initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'PIT'
+- type: 'pit'
+- mode: 'LPTMR_GENERAL'
+- custom_name_enabled: 'false'
+- type_id: 'pit_2.0.3'
+- functional_group: 'BOARD_InitPeripherals'
+- peripheral: 'PIT'
+- config_sets:
+  - fsl_pit:
+    - enableRunInDebug: 'false'
+    - timingConfig:
+      - clockSource: 'BusInterfaceClock'
+      - clockSourceFreq: 'GetFreq'
+    - channels:
+      - 0:
+        - channel_id: 'CHANNEL_0'
+        - channelNumber: '0'
+        - enableChain: 'false'
+        - timerPeriod: '5ms'
+        - startTimer: 'false'
+        - enableInterrupt: 'true'
+        - interrupt:
+          - IRQn: 'PIT0_IRQn'
+          - enable_interrrupt: 'enabled'
+          - enable_priority: 'false'
+          - priority: '0'
+          - enable_custom_name: 'false'
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+const pit_config_t PIT_config = {
+  .enableRunInDebug = false
+};
+
+static void PIT_init(void) {
+  /* Initialize the PIT. */
+  PIT_Init(PIT_PERIPHERAL, &PIT_config);
+  /* Set channel 0 period to N/A. */
+  PIT_SetTimerPeriod(PIT_PERIPHERAL, PIT_CHANNEL_0, PIT_CHANNEL_0_TICKS);
+  /* Enable interrupts from channel 0. */
+  PIT_EnableInterrupts(PIT_PERIPHERAL, PIT_CHANNEL_0, kPIT_TimerInterruptEnable);
+  /* Enable interrupt PIT_CHANNEL_0_IRQN request in the NVIC */
+  EnableIRQ(PIT_CHANNEL_0_IRQN);
+}
+
+/***********************************************************************************************************************
  * Initialization functions
  **********************************************************************************************************************/
 void BOARD_InitPeripherals(void)
 {
   /* Initialize components */
   UART0_init();
+  PIT_init();
 }
 
 /***********************************************************************************************************************
