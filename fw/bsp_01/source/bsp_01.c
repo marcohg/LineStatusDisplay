@@ -78,13 +78,17 @@ void PIT_CHANNEL_0_IRQHANDLER(void) {
 
 void FrameReply(void) {
 	//		// In 485 we should disable receive, and TX when idle
+
 	volatile uint16_t count = rx_index;
+	UART_EnableInterrupts(UART0_PERIPHERAL, 0);	// disable (RX, OVR) interrupts
 	for(uint16_t i =0; i< count; ++i) {
 		while(!(kUART_TxDataRegEmptyFlag & UART_GetStatusFlags(UART0_PERIPHERAL)));	// caution
 		UART_WriteByte(UART0_PERIPHERAL, rx_buffer[i]);
 	}
 	rx_index = 0;
 	GPIO_PortClear(GPIOD, 1U << 5);	// PTD5
+	/// \todo Flush RX buffer
+	UART_EnableInterrupts(UART0_PERIPHERAL, kUART_RxDataRegFullInterruptEnable | kUART_RxOverrunInterruptEnable);
 }
 
 /*
