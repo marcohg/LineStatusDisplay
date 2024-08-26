@@ -19,5 +19,19 @@ Note:  Newlib (none) fails to provide ->  _close, _fstat,
 
 Is acceptable to have TX blocking.
 
-ABCDEF
-12345
+## Wiring
+Modbus UART0
+PTD4	UART0_RTS
+PTA1	UART0_RX
+PTA2	UART0_TX
+
+Debug UART1
+PTE0    UART1_TX
+PTE1    UART1_RX
+
+Encoder
+PTB18   FTM2_CH0    QDA
+PTB19   FTM2_CH1    QDB
+
+PTD5    Test Point
+
