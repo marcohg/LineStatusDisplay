@@ -13,6 +13,7 @@
 #include "fsl_uart.h"
 #include "fsl_clock.h"
 #include "fsl_pit.h"
+#include "fsl_ftm.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -55,12 +56,17 @@ extern "C" {
 #define PIT_CHANNEL_0_IRQN PIT0_IRQn
 /* PIT interrupt handler identifier. */
 #define PIT_CHANNEL_0_IRQHANDLER PIT0_IRQHandler
+/* Definition of peripheral ID */
+#define FTM2_PERIPHERAL FTM2
+/* Definition of the clock source frequency */
+#define FTM2_CLOCK_SOURCE CLOCK_GetFreq(kCLOCK_BusClk)
 
 /***********************************************************************************************************************
  * Global variables
  **********************************************************************************************************************/
 extern const uart_config_t UART0_config;
 extern const pit_config_t PIT_config;
+extern const ftm_config_t FTM2_config;
 
 /***********************************************************************************************************************
  * Initialization functions

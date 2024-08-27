@@ -107,6 +107,11 @@
                         <data>true</data>
                      </feature>
                   </dependency>
+                  <dependency resourceType="Peripheral" resourceId="FTM2" description="Peripheral FTM2 signals are routed in the Pins Tool, but the peripheral is not initialized in the Peripherals Tool." problem_level="1" source="Pins:BOARD_InitPins">
+                     <feature name="initialized" evaluation="equal">
+                        <data>true</data>
+                     </feature>
+                  </dependency>
                   <dependency resourceType="SWComponent" resourceId="platform.drivers.common" description="Pins initialization requires the COMMON Driver in the project." problem_level="2" source="Pins:BOARD_InitPins">
                      <feature name="enabled" evaluation="equal" configuration="core0">
                         <data>true</data>
@@ -141,6 +146,8 @@
                         <pin_feature name="direction" value="OUTPUT"/>
                      </pin_features>
                   </pin>
+                  <pin peripheral="FTM2" signal="QD_PH, A" pin_num="41" pin_signal="PTB18/FTM2_CH0/I2S0_TX_BCLK/FB_AD15/FTM2_QD_PHA"/>
+                  <pin peripheral="FTM2" signal="QD_PH, B" pin_num="42" pin_signal="PTB19/FTM2_CH1/I2S0_TX_FS/FB_OE_b/FTM2_QD_PHB"/>
                </pins>
             </function>
             <function name="BOARD_InitLEDsPins">
@@ -849,6 +856,16 @@
                   <data type="Version" maxValue="2.0.9">2.0.3</data>
                </feature>
             </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.drivers.ftm" description="FTM Driver is not found in the toolchain/IDE project. The project will not compile!" problem_level="2" source="Peripherals">
+               <feature name="enabled" evaluation="equal">
+                  <data type="Boolean">true</data>
+               </feature>
+            </dependency>
+            <dependency resourceType="SWComponent" resourceId="platform.drivers.ftm" description="An unsupported version of the FTM Driver in the toolchain/IDE project. Required: ${required_value}, actual: ${actual_value}. The project might not compile correctly." problem_level="1" source="Peripherals">
+               <feature name="version" evaluation="equivalent">
+                  <data type="Version">2.6.0</data>
+               </feature>
+            </dependency>
             <dependency resourceType="Tool" resourceId="Clocks" description="The Clocks tool is required by the Peripherals tool, but it is disabled." problem_level="2" source="Peripherals">
                <feature name="enabled" evaluation="equal">
                   <data>true</data>
@@ -885,6 +902,36 @@
                   <dependency resourceType="ClockOutput" resourceId="Bus_clock" description="Bus clock is inactive." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
                      <feature name="frequency" evaluation="greaterThan">
                         <data type="Frequency" unit="Hz">0</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="ClockOutput" resourceId="Bus_clock" description="Bus clock is inactive." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="frequency" evaluation="greaterThan">
+                        <data type="Frequency" unit="Hz">0</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="ClockOutput" resourceId="Bus_clock" description="Bus clock is inactive." problem_level="2" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="frequency" evaluation="greaterThan">
+                        <data type="Frequency" unit="Hz">0</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="FTM2.tmr_qd_ph.A" description="Quadrature decoder phase A signal is not supported for the device FTM2" problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="exists" evaluation="equal">
+                        <data type="Boolean">true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="FTM2.tmr_qd_ph.A" description="Quadrature decoder phase A signal is not routed (FTM2 device)." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="routed" evaluation="equal">
+                        <data type="Boolean">true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="FTM2.tmr_qd_ph.B" description="Quadrature decoder phase B signal is not supported for the device FTM2" problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="exists" evaluation="equal">
+                        <data type="Boolean">true</data>
+                     </feature>
+                  </dependency>
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="FTM2.tmr_qd_ph.B" description="Quadrature decoder phase B signal is not routed (FTM2 device)." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                     <feature name="routed" evaluation="equal">
+                        <data type="Boolean">true</data>
                      </feature>
                   </dependency>
                </dependencies>
@@ -968,6 +1015,91 @@
                               </struct>
                            </struct>
                         </array>
+                     </config_set>
+                  </instance>
+                  <instance name="FTM2" uuid="38aac342-0dc1-4acb-9ac7-306a26155749" type="ftm" type_id="ftm_2.6.0" mode="QuadratureDecoder" peripheral="FTM2" enabled="true" comment="" custom_name_enabled="false" editing_lock="false">
+                     <config_set name="ftm_main_config" quick_selection="QuickSelectionDefault">
+                        <struct name="ftm_config">
+                           <setting name="clockSource" value="kFTM_SystemClock"/>
+                           <setting name="clockSourceFreq" value="GetFreq"/>
+                           <setting name="timerPrescaler" value="1"/>
+                           <setting name="systemClockSource" value="BusInterfaceClock"/>
+                           <setting name="systemClockSourceFreq" value="mirrored_value"/>
+                           <setting name="faultMode" value="kFTM_Fault_Disable"/>
+                           <setting name="inputFilterPeriod" value="1"/>
+                           <array name="faultInputs">
+                              <struct name="0">
+                                 <setting name="enableFaultInput" value="false"/>
+                                 <setting name="faultLevelVal" value="low"/>
+                                 <setting name="useFaultFilter" value="false"/>
+                              </struct>
+                              <struct name="1">
+                                 <setting name="enableFaultInput" value="false"/>
+                                 <setting name="faultLevelVal" value="low"/>
+                                 <setting name="useFaultFilter" value="false"/>
+                              </struct>
+                              <struct name="2">
+                                 <setting name="enableFaultInput" value="false"/>
+                                 <setting name="faultLevelVal" value="low"/>
+                                 <setting name="useFaultFilter" value="false"/>
+                              </struct>
+                              <struct name="3">
+                                 <setting name="enableFaultInput" value="false"/>
+                                 <setting name="faultLevelVal" value="low"/>
+                                 <setting name="useFaultFilter" value="false"/>
+                              </struct>
+                           </array>
+                           <setting name="deadTimePrescale" value="kFTM_Deadtime_Prescale_1"/>
+                           <setting name="deadTimePeriod" value="0"/>
+                           <set name="pwmSyncMode">
+                              <selected>
+                                 <id>kFTM_SoftwareTrigger</id>
+                              </selected>
+                           </set>
+                           <setting name="swTriggerResetCount" value="true"/>
+                           <setting name="hwTriggerResetCount" value="false"/>
+                           <set name="reloadPoints">
+                              <selected/>
+                           </set>
+                           <set name="extTriggers">
+                              <selected/>
+                           </set>
+                           <set name="chnlInitState">
+                              <selected/>
+                           </set>
+                           <set name="chnlPolarity">
+                              <selected/>
+                           </set>
+                           <setting name="bdmMode" value="kFTM_BdmMode_0"/>
+                           <setting name="useGlobalTimeBase" value="false"/>
+                        </struct>
+                        <set name="timer_interrupts">
+                           <selected/>
+                        </set>
+                        <setting name="enable_irq" value="false"/>
+                        <struct name="ftm_interrupt">
+                           <setting name="IRQn" value="FTM2_IRQn"/>
+                           <setting name="enable_interrrupt" value="enabled"/>
+                           <setting name="enable_priority" value="false"/>
+                           <setting name="priority" value="0"/>
+                           <setting name="enable_custom_name" value="false"/>
+                        </struct>
+                        <setting name="EnableTimerInInit" value="true"/>
+                     </config_set>
+                     <config_set name="ftm_quadrature_decoder_mode">
+                        <setting name="timerModuloVal" value="1000"/>
+                        <setting name="timerInitVal" value="0"/>
+                        <setting name="ftm_quad_decoder_mode" value="kFTM_QuadPhaseEncode"/>
+                        <struct name="ftm_phase_a_params">
+                           <setting name="enablePhaseFilter" value="false"/>
+                           <setting name="phaseFilterPeriod" value="1"/>
+                           <setting name="phasePolarity" value="kFTM_QuadPhaseNormal"/>
+                        </struct>
+                        <struct name="ftm_phase_b_params">
+                           <setting name="enablePhaseFilter" value="false"/>
+                           <setting name="phaseFilterPeriod" value="1"/>
+                           <setting name="phasePolarity" value="kFTM_QuadPhaseNormal"/>
+                        </struct>
                      </config_set>
                   </instance>
                </instances>

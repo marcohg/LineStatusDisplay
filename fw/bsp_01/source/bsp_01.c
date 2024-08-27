@@ -117,6 +117,7 @@ int main(void) {
 	UART_Enable_RTS485(UART0_PERIPHERAL);
 	/* Force the counter to be placed into memory. */
 	volatile static int i = 0;
+	uint32_t	count =0;
 	/* Enter an infinite loop, just incrementing a counter. */
 	while (1) {
 		i++;
@@ -124,6 +125,9 @@ int main(void) {
 			FrameReply();
 			frame_received = false;
 		}
+		count = FTM_GetQuadDecoderCounterValue(FTM2_PERIPHERAL);
+		if(i % 5000 )
+			PRINTF("Count %ld\r\n", count);
 	}
 	return 0;
 }
