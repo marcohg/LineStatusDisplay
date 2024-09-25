@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 acf575ccca6241ab421a3e59c5a1db29cefc950c marcohg <marco.henrygin@gmail.com> 1726263640 -0700	commit (initial): Using Target PCB - testing MCG
+acf575ccca6241ab421a3e59c5a1db29cefc950c 8accc9311048fb0df93bd61b2294fd97bb4511eb marcohg <marco.henrygin@gmail.com> 1726636673 -0700	commit: Implemented total, encoder, speed in counts
+8accc9311048fb0df93bd61b2294fd97bb4511eb 3cd58dc4668690a637bc3ae8ad80dd8b57043670 marcohg <marco.henrygin@gmail.com> 1727210672 -0700	commit: Cleanup LUTs, tested
+3cd58dc4668690a637bc3ae8ad80dd8b57043670 3fb87a7441dd0993fd8756e0858ddbdf59c15192 marcohg <marco.henrygin@gmail.com> 1727213350 -0700	commit: test time_base_ms
+3fb87a7441dd0993fd8756e0858ddbdf59c15192 5dc0f0de81ee52b6dce1f24e47c6708496b5e745 marcohg <marco.henrygin@gmail.com> 1727226800 -0700	commit: Add some bash tests and move to LineStatusDisplay
