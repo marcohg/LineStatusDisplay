@@ -32,12 +32,13 @@ int main(int argc, char *argv[]) {
     // Logic:
     //  - run: communicate all connected (active) nodes
     //  - service: connect, configure
-    for (int i = 0; i < 120; ++i) {
+    while (1) {
       if (line_encoder.GetData(0, line1)) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(500));
-        float hz = (float)line1.delta_counts*1000/4/nodes[0].time_base;
-        std::cout << line1.status << "," << line1.run_time << "," << line1.total_counts << "," << line1.delta_counts << "\n";
+        float hz = (float) line1.delta_counts * 1000 / 4 / nodes[0].time_base;
+        std::cout << line1.status << "," << line1.run_time << "," << line1.total_counts << "," << line1.delta_counts
+                  << "," << hz << "\n";
       }
+      std::this_thread::sleep_for(std::chrono::milliseconds(250));
     }
 //    TestModbusEncoder(cfg.serial_port.c_str());
   }
