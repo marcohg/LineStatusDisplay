@@ -11,7 +11,6 @@
 /*******************************************************************************
  * Definitions
  ******************************************************************************/
-#define BOARD_XTAL0_CLK_HZ                          8000000U  /*!< Board xtal0 frequency in Hz */
 #define BOARD_XTAL32K_CLK_HZ                          32768U  /*!< Board RTC xtal frequency in Hz */
 
 /*******************************************************************************
@@ -108,7 +107,7 @@ void BOARD_BootClockVLPR(void);
 /*******************************************************************************
  * Definitions for BOARD_BootClockHSRUN configuration
  ******************************************************************************/
-#define BOARD_BOOTCLOCKHSRUN_CORE_CLOCK            80000000U  /*!< Core clock frequency: 80000000Hz */
+#define BOARD_BOOTCLOCKHSRUN_CORE_CLOCK            33177600U  /*!< Core clock frequency: 33177600Hz */
 
 /*! @brief MCG set for BOARD_BootClockHSRUN configuration.
  */

@@ -17,7 +17,7 @@
 #define BUILD 0
 
 extern uint32_t status        ;
-extern uint32_t fault         ;
+extern uint32_t serial_command;
 extern int32_t  total_counts  ;
 extern uint32_t *encoder      ;
 extern int32_t 	delta_counts  ;
@@ -50,17 +50,21 @@ const std_t std_lut[MODBUS_STD_TBL_SIZE] = {
 
 // LUT to access 32bit value - first part is read only
 const ext_t ext_lut[] = {
-    { .type = ext_t::u32, { .u32 = &firmware_version      } },  // 16     // Information, implicit access=RO
-    { .type = ext_t::u32, .data = { .u32 = &status        } },  // 18
-    { .type = ext_t::u32, .data = { .u32 = &fault         } },  // 20
-    { .type = ext_t::i32, .data = { .i32 = &total_counts  } },  // 22
-    { .type = ext_t::u32, .data = { .u32 = encoder        } },  // 24 point to FTM2->CNT
-    { .type = ext_t::u32, .data = { .i32 = &delta_counts  } },  // 26
-    { .type = ext_t::u32, .data = { .u32 = &run_time      } },  // 28
-    { .type = ext_t::f32, .data = { .f32 = &speed_monitor } },  // 30
+    { .type = ext_t::u32, .data = { .u32 = &status        } },  // 16
+    { .type = ext_t::u32, .data = { .u32 = &run_time      } },  // 18
+    { .type = ext_t::i32, .data = { .i32 = &total_counts  } },  // 20
+    { .type = ext_t::u32, .data = { .i32 = &delta_counts  } },  // 22
+    { .type = ext_t::f32, .data = { .f32 = &speed_monitor } },  // 24
+    { .type = ext_t::u32, { .u32 = &firmware_version      } },  // 26     // Information, implicit access=RO
+    { .type = ext_t::u32, .data = { .u32 = encoder        } },  // 28 point to FTM2->CNT
+    GAP,                                                        // 30
     GAP,                                                        // 32
-    { .type = ext_t::u32, .data = { .u32 = &time_base_ms  }, .access = ext_t::RW}, //  34 - RW
-    { .type = ext_t::f32, .data = { .f32 = &pulse_length  }, .access = ext_t::RW}, //  36 RW
+    GAP,                                                        // 34
+    GAP,                                                        // 36
+    GAP,                                                        // 38
+    { .type = ext_t::u32, .data = { .u32 = &serial_command}, .access = ext_t::RW}, //  40 - RW
+    { .type = ext_t::u32, .data = { .u32 = &time_base_ms  }, .access = ext_t::RW}, //  42 - RW
+    { .type = ext_t::f32, .data = { .f32 = &pulse_length  }, .access = ext_t::RW}, //  44  RW
 };
 
 #endif

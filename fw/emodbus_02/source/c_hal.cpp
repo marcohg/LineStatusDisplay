@@ -55,7 +55,7 @@ void UART0_SERIAL_RX_TX_IRQHANDLER(void) {
       if (tx_index == tx_nbr) {
         tx_complete = true;
         c_hal::rx_index = 0;  //
-        c_hal::Clear_TP1();  // GPIO_PortClear(GPIOD, 1U << 5);  // PTD5
+//        c_hal::Clear_TP1();  // GPIO_PortClear(GPIOD, 1U << 5);  // PTD5
         c_hal::RxIsrMode485();
 
       } else
@@ -112,7 +112,13 @@ void PIT_CHANNEL_1_IRQHANDLER(void) {
   PIT_ClearStatusFlags(PIT_PERIPHERAL, PIT_CHANNEL_1, intStatus);
 
   /* Place your code here */
-  ++run_time;
+  static uint16_t runtime_rate;
+  if(++runtime_rate >= 1000) {
+    runtime_rate = 0;
+    ++run_time;
+  }
+  c_hal::Toggle_TP1();
+
 
   // Get Counts - Delta counts should be lower than FTM_QUAD_MODULE counts 
   volatile uint16_t counts = *encoder;  // Assume +direction for now
@@ -148,9 +154,9 @@ void PIT_CHANNEL_1_IRQHANDLER(void) {
 #endif
 
 
-void c_hal::Set_TP1()    { GPIO_PortSet(GPIOD, 1U << 5);    } // PTD5
-void c_hal::Clear_TP1()  { GPIO_PortClear(GPIOD, 1U << 5);  }
-void c_hal::Toggle_TP1() { GPIO_PortToggle(GPIOD, 1U << 5); }
+void c_hal::Set_TP1()    { GPIO_PortSet(GPIOC, 1U << 7);    } // PTD5
+void c_hal::Clear_TP1()  { GPIO_PortClear(GPIOC, 1U << 7);  }
+void c_hal::Toggle_TP1() { GPIO_PortToggle(GPIOC, 1U << 7); }
 
 /**
  * \brief hal constructor sets up the hardware for the application
@@ -201,7 +207,7 @@ void c_hal::Send485(uint8_t *data, uint16_t length) {
     assert(length);
     memcpy(tx_buffer, data, length);
     //    TransmitEnable(true); // or flush
-    Set_TP1();// GPIO_PortSet(GPIOD, 1U << 5);  // PTD5
+//    Set_TP1();// GPIO_PortSet(GPIOD, 1U << 5);  // PTD5
     while (!(kUART_TxDataRegEmptyFlag & UART_GetStatusFlags(UART0_PERIPHERAL)));  // caution
     tx_nbr = length;
     tx_index = 1;

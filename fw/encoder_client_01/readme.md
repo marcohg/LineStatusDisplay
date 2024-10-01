@@ -13,3 +13,5 @@ Provide the following flags for compilation:
 
 
 
+Added c_modbus class
+Arrange encoder registers

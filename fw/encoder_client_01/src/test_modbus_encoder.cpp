@@ -5,8 +5,8 @@
 // $ gcc -O2 -Wall -I /usr/include/modbus example.c -o test -L/usr/local/lib/modbus -lmodbus
 
 //#define SLAVE_ADDRESS 2
-extern int slave_address;
-extern int baud;
+int mb_address = 2;
+int baud = 115200;
 
 int TestModbusEncoder(const char *serial_port) {
 
@@ -30,7 +30,7 @@ int TestModbusEncoder(const char *serial_port) {
     fprintf(stderr, "Unable to create the libmodbus context\n");
     return -2;
   }
-  modbus_set_slave(ctx, slave_address);
+  modbus_set_slave(ctx, mb_address);
 
   if (modbus_connect(ctx) == -1)
   {

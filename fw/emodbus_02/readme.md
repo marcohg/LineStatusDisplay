@@ -20,4 +20,15 @@ Using K22 to read the Encoder counts ans speed using Modbus RTU
   	PEE, Core 80MHz, System 80MHz, Bus 40MHz, Flash 20MHZ, Disable RTC (32KHz)
  
  	
-  
+## 9-30-2024
+Resonator 8MHZ-> 11.0592MHZ crystal (final will be 8MHz too)
+PIT = bus clock 33.1776MHZ
+  ch0 - single 5ms
+  ch1 - periodic 1ms
+Registers ext
+16  status
+18  run_time
+20  total_counts
+22  delta
+
+

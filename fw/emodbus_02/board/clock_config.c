@@ -37,7 +37,7 @@ product: Clocks v14.0
 processor: MK22FN256xxx12
 package_id: MK22FN256VLH12
 mcu_data: ksdk2_0
-processor_version: 16.1.0
+processor_version: 16.2.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -359,16 +359,16 @@ void BOARD_BootClockVLPR(void)
 name: BOARD_BootClockHSRUN
 called_from_default_init: true
 outputs:
-- {id: Bus_clock.outFreq, value: 40 MHz, locked: true, accuracy: '0.001'}
-- {id: Core_clock.outFreq, value: 80 MHz, locked: true, accuracy: '0.001'}
-- {id: Flash_clock.outFreq, value: 20 MHz}
+- {id: Bus_clock.outFreq, value: 33.1776 MHz}
+- {id: Core_clock.outFreq, value: 33.1776 MHz}
+- {id: Flash_clock.outFreq, value: 11.0592 MHz}
 - {id: LPO_clock.outFreq, value: 1 kHz}
-- {id: MCGFFCLK.outFreq, value: 250 kHz}
+- {id: MCGFFCLK.outFreq, value: 345.6 kHz}
 - {id: MCGIRCLK.outFreq, value: 32.768 kHz}
-- {id: OSCERCLK.outFreq, value: 8 MHz, locked: true, accuracy: '0.001'}
-- {id: OSCERCLK_UNDIV.outFreq, value: 8 MHz, locked: true, accuracy: '0.001'}
-- {id: PLLFLLCLK.outFreq, value: 80 MHz, locked: true, accuracy: '0.001'}
-- {id: System_clock.outFreq, value: 80 MHz, locked: true, accuracy: '0.001'}
+- {id: OSCERCLK.outFreq, value: 11.0592 MHz}
+- {id: OSCERCLK_UNDIV.outFreq, value: 11.0592 MHz}
+- {id: PLLFLLCLK.outFreq, value: 66.3552 MHz}
+- {id: System_clock.outFreq, value: 33.1776 MHz}
 settings:
 - {id: MCGMode, value: PEE}
 - {id: CLKOUTConfig, value: 'yes'}
@@ -377,27 +377,25 @@ settings:
 - {id: MCG.FRDIV.scale, value: '32'}
 - {id: MCG.IREFS.sel, value: MCG.FRDIV}
 - {id: MCG.PLLS.sel, value: MCG.PLL}
-- {id: MCG.PRDIV.scale, value: '3', locked: true}
-- {id: MCG.VDIV.scale, value: '30', locked: true}
+- {id: MCG.PRDIV.scale, value: '4'}
 - {id: MCG_C1_IRCLKEN_CFG, value: Enabled}
-- {id: MCG_C2_OSC_MODE_CFG, value: ModeOscHighGain}
+- {id: MCG_C2_OSC_MODE_CFG, value: ModeOscLowPower}
 - {id: MCG_C2_RANGE0_CFG, value: Very_high}
 - {id: MCG_C2_RANGE0_FRDIV_CFG, value: Very_high}
 - {id: OSC_CR_ERCLKEN_CFG, value: Enabled}
 - {id: OSC_CR_ERCLKEN_UNDIV_CFG, value: Enabled}
-- {id: OSC_CR_SYS_OSC_CAP_LOAD_CFG, value: SC8PF}
 - {id: RTC_CR_CLKO_CFG, value: Disabled}
 - {id: RTC_CR_OSC_CAP_LOAD_CFG, value: SC12PF}
-- {id: SIM.OUTDIV1.scale, value: '1', locked: true}
-- {id: SIM.OUTDIV2.scale, value: '2', locked: true}
-- {id: SIM.OUTDIV4.scale, value: '4', locked: true}
+- {id: SIM.OUTDIV1.scale, value: '2'}
+- {id: SIM.OUTDIV2.scale, value: '2'}
+- {id: SIM.OUTDIV4.scale, value: '6'}
 - {id: SIM.PLLFLLSEL.sel, value: MCG.MCGPLLCLK}
 - {id: SIM.RTCCLKOUTSEL.sel, value: RTC.RTC32KCLK}
 - {id: SIM.USBDIV.scale, value: '1', locked: true}
 - {id: SIM.USBFRAC.scale, value: '1', locked: true}
 - {id: USBClkConfig, value: 'yes'}
 sources:
-- {id: OSC.OSC.outFreq, value: 8 MHz, enabled: true}
+- {id: OSC.OSC.outFreq, value: 11.0592 MHz, enabled: true, uiValue: 11.05... MHz}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -417,21 +415,21 @@ const mcg_config_t mcgConfig_BOARD_BootClockHSRUN =
         .pll0Config =
             {
                 .enableMode = MCG_PLL_DISABLE,    /* MCGPLLCLK disabled */
-                .prdiv = 0x2U,                    /* PLL Reference divider: divided by 3 */
-                .vdiv = 0x6U,                     /* VCO divider: multiplied by 30 */
+                .prdiv = 0x3U,                    /* PLL Reference divider: divided by 4 */
+                .vdiv = 0x0U,                     /* VCO divider: multiplied by 24 */
             },
     };
 const sim_clock_config_t simConfig_BOARD_BootClockHSRUN =
     {
         .pllFllSel = SIM_PLLFLLSEL_MCGPLLCLK_CLK, /* PLLFLL select: MCGPLLCLK clock */
         .er32kSrc = SIM_OSC32KSEL_OSC32KCLK_CLK,  /* OSC32KSEL select: OSC32KCLK clock */
-        .clkdiv1 = 0x1030000U,                    /* SIM_CLKDIV1 - OUTDIV1: /1, OUTDIV2: /2, OUTDIV4: /4 */
+        .clkdiv1 = 0x11050000U,                   /* SIM_CLKDIV1 - OUTDIV1: /2, OUTDIV2: /2, OUTDIV4: /6 */
     };
 const osc_config_t oscConfig_BOARD_BootClockHSRUN =
     {
-        .freq = 8000000U,                         /* Oscillator frequency: 8000000Hz */
-        .capLoad = (kOSC_Cap8P),                  /* Oscillator capacity load: 8pF */
-        .workMode = kOSC_ModeOscHighGain,         /* Oscillator high gain */
+        .freq = 11059200U,                        /* Oscillator frequency: 11059200Hz */
+        .capLoad = (OSC_CAP0P),                   /* Oscillator capacity load: 0pF */
+        .workMode = kOSC_ModeOscLowPower,         /* Oscillator low power */
         .oscerConfig =
             {
                 .enableMode = kOSC_ErClkEnable,   /* Enable external reference clock, disable external reference clock in STOP mode */

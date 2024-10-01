@@ -9,8 +9,8 @@ c_hal *hal;
 c_modbus *modbus;
 
 // Sample Data
-uint32_t status				 = 0x1234'5678;
-uint32_t fault         = 50'000'000;
+uint32_t status				 = 0;
+uint32_t serial_command= 0;
 int32_t  total_counts  ;
 int32_t  delta_counts  ;
 uint32_t run_time      ;

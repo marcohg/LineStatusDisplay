@@ -13,9 +13,9 @@
 #include "fsl_uart.h"
 #include "fsl_clock.h"
 #include "fsl_pit.h"
+#include "fsl_ftm.h"
 #include "fsl_gpio.h"
 #include "fsl_port.h"
-#include "fsl_ftm.h"
 
 #if defined(__cplusplus)
 extern "C" {
@@ -43,11 +43,11 @@ extern "C" {
 /* Definition of clock source. */
 #define PIT_CLOCK_SOURCE kCLOCK_BusClk
 /* Definition of clock source frequency. */
-#define PIT_CLK_FREQ CLOCK_GetFreq(PIT_CLOCK_SOURCE)
+#define PIT_CLK_FREQ 33177600UL
 /* Definition of ticks count for channel 0 - deprecated. */
-#define PIT_0_TICKS USEC_TO_COUNT(5000U, PIT_CLK_FREQ)
+#define PIT_0_TICKS 165888U
 /* Definition of ticks count for channel 1 - deprecated. */
-#define PIT_1_TICKS USEC_TO_COUNT(1000U, PIT_CLK_FREQ)
+#define PIT_1_TICKS 33178U
 /* PIT interrupt vector ID (number) - deprecated. */
 #define PIT_0_IRQN PIT0_IRQn
 /* PIT interrupt handler identifier - deprecated. */
@@ -61,9 +61,9 @@ extern "C" {
 /* Definition of channel number for channel 1. */
 #define PIT_CHANNEL_1 kPIT_Chnl_1
 /* Definition of ticks count for channel 0. */
-#define PIT_CHANNEL_0_TICKS USEC_TO_COUNT(5000U, PIT_CLK_FREQ)
+#define PIT_CHANNEL_0_TICKS 165888U
 /* Definition of ticks count for channel 1. */
-#define PIT_CHANNEL_1_TICKS USEC_TO_COUNT(1000U, PIT_CLK_FREQ)
+#define PIT_CHANNEL_1_TICKS 33178U
 /* PIT interrupt vector ID (number). */
 #define PIT_CHANNEL_0_IRQN PIT0_IRQn
 /* PIT interrupt handler identifier. */
@@ -72,12 +72,12 @@ extern "C" {
 #define PIT_CHANNEL_1_IRQN PIT1_IRQn
 /* PIT interrupt handler identifier. */
 #define PIT_CHANNEL_1_IRQHANDLER PIT1_IRQHandler
-/* Alias for GPIOD peripheral */
-#define GPIOD_GPIO GPIOD
 /* Definition of peripheral ID */
 #define FTM2_PERIPHERAL FTM2
 /* Definition of the clock source frequency */
 #define FTM2_CLOCK_SOURCE CLOCK_GetFreq(kCLOCK_BusClk)
+/* Alias for GPIOC peripheral */
+#define GPIOC_GPIO GPIOC
 
 /***********************************************************************************************************************
  * Global variables

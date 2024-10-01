@@ -10,7 +10,7 @@ product: Peripherals v15.0
 processor: MK22FN256xxx12
 package_id: MK22FN256VLH12
 mcu_data: ksdk2_0
-processor_version: 16.1.0
+processor_version: 16.2.0
 functionalGroups:
 - name: BOARD_InitPeripherals
   UUID: b416cb72-337f-413f-ba12-8c1f0ea0616f
@@ -164,7 +164,7 @@ instance:
     - enableRunInDebug: 'false'
     - timingConfig:
       - clockSource: 'BusInterfaceClock'
-      - clockSourceFreq: 'GetFreq'
+      - clockSourceFreq: 'ClocksTool_DefaultInit'
     - channels:
       - 0:
         - channel_id: 'CHANNEL_0'
@@ -201,9 +201,9 @@ const pit_config_t PIT_config = {
 static void PIT_init(void) {
   /* Initialize the PIT. */
   PIT_Init(PIT_PERIPHERAL, &PIT_config);
-  /* Set channel 0 period to N/A. */
+  /* Set channel 0 period to 5 ms (165888 ticks). */
   PIT_SetTimerPeriod(PIT_PERIPHERAL, PIT_CHANNEL_0, PIT_CHANNEL_0_TICKS);
-  /* Set channel 1 period to N/A. */
+  /* Set channel 1 period to 1 ms (33178 ticks). */
   PIT_SetTimerPeriod(PIT_PERIPHERAL, PIT_CHANNEL_1, PIT_CHANNEL_1_TICKS);
   /* Enable interrupts from channel 0. */
   PIT_EnableInterrupts(PIT_PERIPHERAL, PIT_CHANNEL_0, kPIT_TimerInterruptEnable);
@@ -217,36 +217,6 @@ static void PIT_init(void) {
   PIT_StartTimer(PIT_PERIPHERAL, PIT_CHANNEL_0);
   /* Start channel 1. */
   PIT_StartTimer(PIT_PERIPHERAL, PIT_CHANNEL_1);
-}
-
-/***********************************************************************************************************************
- * GPIOD initialization code
- **********************************************************************************************************************/
-/* clang-format off */
-/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
-instance:
-- name: 'GPIOD'
-- type: 'gpio'
-- mode: 'GPIO'
-- custom_name_enabled: 'false'
-- type_id: 'gpio_2.7.0'
-- functional_group: 'BOARD_InitPeripherals'
-- peripheral: 'GPIOD'
-- config_sets:
-  - fsl_gpio:
-    - enable_irq: 'false'
-    - port_interrupt:
-      - IRQn: 'PORTD_IRQn'
-      - enable_interrrupt: 'enabled'
-      - enable_priority: 'false'
-      - priority: '0'
-      - enable_custom_name: 'false'
-    - quick_selection: 'QS_GPIO_1'
- * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
-/* clang-format on */
-
-static void GPIOD_init(void) {
-  /* Make sure, the clock gate for port D is enabled (e. g. in pin_mux.c) */
 }
 
 /***********************************************************************************************************************
@@ -360,6 +330,36 @@ static void FTM2_init(void) {
 }
 
 /***********************************************************************************************************************
+ * GPIOC initialization code
+ **********************************************************************************************************************/
+/* clang-format off */
+/* TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
+instance:
+- name: 'GPIOC'
+- type: 'gpio'
+- mode: 'GPIO'
+- custom_name_enabled: 'false'
+- type_id: 'gpio_2.7.0'
+- functional_group: 'BOARD_InitPeripherals'
+- peripheral: 'GPIOC'
+- config_sets:
+  - fsl_gpio:
+    - enable_irq: 'false'
+    - port_interrupt:
+      - IRQn: 'PORTC_IRQn'
+      - enable_interrrupt: 'enabled'
+      - enable_priority: 'false'
+      - priority: '0'
+      - enable_custom_name: 'false'
+    - quick_selection: 'QS_GPIO_1'
+ * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
+/* clang-format on */
+
+static void GPIOC_init(void) {
+  /* Make sure, the clock gate for port C is enabled (e. g. in pin_mux.c) */
+}
+
+/***********************************************************************************************************************
  * Initialization functions
  **********************************************************************************************************************/
 void BOARD_InitPeripherals(void)
@@ -367,8 +367,8 @@ void BOARD_InitPeripherals(void)
   /* Initialize components */
   UART0_init();
   PIT_init();
-  GPIOD_init();
   FTM2_init();
+  GPIOC_init();
 }
 
 /***********************************************************************************************************************

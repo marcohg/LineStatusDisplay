@@ -11,7 +11,7 @@ product: Pins v16.0
 processor: MK22FN256xxx12
 package_id: MK22FN256VLH12
 mcu_data: ksdk2_0
-processor_version: 16.1.0
+processor_version: 16.2.0
 pin_labels:
 - {pin_num: '22', pin_signal: PTA0/UART0_CTS_b/FTM0_CH5/JTAG_TCLK/SWD_CLK/EZP_CLK, label: 'J11[4]/SWD_CLK_TGTMCU'}
 - {pin_num: '23', pin_signal: PTA1/UART0_RX/FTM0_CH6/JTAG_TDI/EZP_DI, label: 'J2[4]/RED_LED', identifier: LEDRGB_RED}
@@ -107,9 +107,9 @@ BOARD_InitPins:
   - {pin_num: '24', peripheral: UART0, signal: TX, pin_signal: PTA2/UART0_TX/FTM0_CH7/JTAG_TDO/TRACE_SWO/EZP_DO, identifier: ''}
   - {pin_num: '23', peripheral: UART0, signal: RX, pin_signal: PTA1/UART0_RX/FTM0_CH6/JTAG_TDI/EZP_DI, identifier: ''}
   - {pin_num: '61', peripheral: UART0, signal: RTS, pin_signal: PTD4/LLWU_P14/SPI0_PCS1/UART0_RTS_b/FTM0_CH4/EWM_IN/SPI1_PCS0}
-  - {pin_num: '62', peripheral: GPIOD, signal: 'GPIO, 5', pin_signal: ADC0_SE6b/PTD5/SPI0_PCS2/UART0_CTS_b/FTM0_CH5/EWM_OUT_b/SPI1_SCK, identifier: ''}
   - {pin_num: '41', peripheral: FTM2, signal: 'QD_PH, A', pin_signal: PTB18/FTM2_CH0/I2S0_TX_BCLK/FTM2_QD_PHA}
   - {pin_num: '42', peripheral: FTM2, signal: 'QD_PH, B', pin_signal: PTB19/FTM2_CH1/I2S0_TX_FS/FTM2_QD_PHB}
+  - {pin_num: '52', peripheral: GPIOC, signal: 'GPIO, 7', pin_signal: CMP0_IN1/PTC7/SPI0_SIN/USB_SOF_OUT/I2S0_RX_FS, direction: OUTPUT}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -126,8 +126,17 @@ void BOARD_InitPins(void)
     CLOCK_EnableClock(kCLOCK_PortA);
     /* Port B Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortB);
+    /* Port C Clock Gate Control: Clock enabled */
+    CLOCK_EnableClock(kCLOCK_PortC);
     /* Port D Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortD);
+
+    gpio_pin_config_t gpioc_pin52_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PTC7 (pin 52)  */
+    GPIO_PinInit(GPIOC, 7U, &gpioc_pin52_config);
 
     /* PORTA1 (pin 23) is configured as UART0_RX */
     PORT_SetPinMux(PORTA, 1U, kPORT_MuxAlt2);
@@ -141,11 +150,11 @@ void BOARD_InitPins(void)
     /* PORTB19 (pin 42) is configured as FTM2_QD_PHB */
     PORT_SetPinMux(PORTB, 19U, kPORT_MuxAlt6);
 
+    /* PORTC7 (pin 52) is configured as PTC7 */
+    PORT_SetPinMux(PORTC, 7U, kPORT_MuxAsGpio);
+
     /* PORTD4 (pin 61) is configured as UART0_RTS_b */
     PORT_SetPinMux(BOARD_RF_CS_PORT, BOARD_RF_CS_PIN, kPORT_MuxAlt3);
-
-    /* PORTD5 (pin 62) is configured as PTD5 */
-    PORT_SetPinMux(PORTD, 5U, kPORT_MuxAsGpio);
 
     SIM->SOPT5 = ((SIM->SOPT5 &
                    /* Mask bits to zero which are setting */
