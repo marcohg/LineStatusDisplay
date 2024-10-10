@@ -1,0 +1,14 @@
+[Unit]
+Description=Start the Encoder Client using Modbus
+After=graphical.target
+#After=encoder_gui.service
+Wants=graphical.target
+
+[Service]
+User=marco
+Group=marco
+#ExecStartPre=/usr/bin/printenv
+ExecStart=/usr/local/sbin/encoder_client.sh
+
+[Install]
+WantedBy=graphical.target
