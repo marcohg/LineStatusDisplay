@@ -2,6 +2,7 @@
 **/*[Dd]ebug*/
 **/[Rr]elease*/
 **/git_ignore/
+**/[Bb]in/
 
 # Any eclipse 
 **/.settings/language.settings.xml

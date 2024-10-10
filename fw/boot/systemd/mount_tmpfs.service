@@ -1,0 +1,10 @@
+[Unit]
+Description=Mount point temporary storage 
+
+[Service]
+# commands 
+ExecStart=/usr/local/sbin/mount_tmpfs.sh
+
+[Install]
+WantedBy=graphical.target
+

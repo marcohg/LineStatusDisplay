@@ -1,0 +1,13 @@
+[Unit]
+Description=Line Encoder Display - marco
+After=graphical.target
+Wants=graphical.target
+
+[Service]
+User=marco
+Group=marco
+#ExecStartPre=/usr/bin/printenv
+ExecStart=/usr/local/sbin/line_encoder.sh
+
+[Install]
+WantedBy=graphical.target
