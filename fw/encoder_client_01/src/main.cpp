@@ -1,9 +1,10 @@
 #include <iostream>
+#include <fstream>
 #include "globals.h"
 #include "c_modbus.h"
 
 
-int ReadConfiguration(const char *fname, node_t *line, config_t *cfg, const int nn);
+void ReadConfiguration(const char *fname, node_t *line, config_t *cfg, const int nn);
 extern int TestModbusEncoder(const char *serial_port);
 
 // Default values
@@ -20,30 +21,51 @@ config_t cfg = {
 
 #include <chrono>
 #include <thread>
+//#include <unistd.h>
+
+
+
 
 int main(int argc, char *argv[]) {
   line_data_t line1;
-  if( int read_config = ReadConfiguration("config.txt", nodes, &cfg, max_nodes) == 0) {
-    c_modbus line_encoder;  // create the object
-    if(line_encoder.memory_error) {
-      std::cout << "Error " << line_encoder.modbus_error << "\n";
-      return 2;
-    }
-    // Logic:
+  ReadConfiguration("/mnt/tmp/line_encoder.cfg", nodes, &cfg, max_nodes); // wait for file
+
+  c_modbus line_encoder;  // create the object
+  if (line_encoder.memory_error) {
+    std::cout << "Error " << line_encoder.modbus_error << "\n";
+    return 2;
+  }
+
+  std::ofstream out;
+  std::string status_file("/mnt/tmp/encoder_client.status");
+  out.open(status_file, std::ios_base::app);  // overwrite here
+  out << "Hello Marco!!\n";
+  out.close();
+
+  while (1) {
     //  - run: communicate all connected (active) nodes
     //  - service: connect, configure
-    while (1) {
-      if (line_encoder.GetData(0, line1)) {
-        float hz = (float) line1.delta_counts * 1000 / 4 / nodes[0].time_base;
-        std::cout << line1.status << "," << line1.run_time << "," << line1.total_counts << "," << line1.delta_counts
-                  << "," << hz << "\n";
-      }
-      std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    if (line_encoder.GetData(0, line1)) {
+      float hz = (float) line1.delta_counts * 1000 / 4 / nodes[0].time_base;
+      // std::cout
+      std::cout << line1.status << "," << line1.run_time << "," << line1.total_counts << "," << line1.delta_counts
+          << "," << hz << "\n";
+      out.open(status_file, std::ios_base::app);
+            out << line1.status << "," << line1.run_time << "," << line1.total_counts << "," << line1.delta_counts
+                      << "," << hz << "\n";
+      out.close();
+
     }
-//    TestModbusEncoder(cfg.serial_port.c_str());
+    else
+      std::cout << ".\r\n";
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+//    sleep(0.5);
   }
-  else {
-    return read_config;
-  }
-  // test c_modbus destructor
+//
+////    TestModbusEncoder(cfg.serial_port.c_str());
+//  }
+//  else {
+//    return read_config;
+//  }
+//  // test c_modbus destructor
 }
