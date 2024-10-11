@@ -4,10 +4,10 @@ After=graphical.target
 Wants=graphical.target
 
 [Service]
-User=marco
-Group=marco
+User=pi
+Group=pi
 #ExecStartPre=/usr/bin/printenv
-ExecStart=/usr/local/sbin/line_encoder.sh
+ExecStart=/usr/local/sbin/encoder_gui.sh
 
 [Install]
 WantedBy=graphical.target
