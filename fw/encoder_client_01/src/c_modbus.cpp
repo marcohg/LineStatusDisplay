@@ -34,6 +34,15 @@ c_modbus::c_modbus() {
         }
       }
     }
+    // int modbus_set_response_timeout(modbus_t *ctx, uint32_t to_sec, uint32_t to_usec);
+    if(cfg.timeout_ms > 999) {
+      uint32_t secs = cfg.timeout_ms/1000; // ms-sec
+      modbus_set_response_timeout(ctx, secs, 0);
+    }
+    else {
+      uint32_t us = cfg.timeout_ms * 1000;
+      modbus_set_response_timeout(ctx, 0, us);
+    }
   } else {
     modbus_error = modbus_strerror(errno);
     modbus_free(ctx);

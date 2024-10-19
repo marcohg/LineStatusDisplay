@@ -6,7 +6,7 @@ The `PROJECT_LOC=/home/user/Documents/LineStatusDisplay` is the project folder l
 
 ## Startup scripts
 - Script files are located in `$PROJECT_LOC/fw/boot`
-- `app_install.sh` moves them to location `/usr/local/sbin` and chmod them to 777 
+- `install.sh` moves them to location `/usr/local/sbin` and chmod them to 777 
 - Three scripts
   - mount_tmpfs.sh -mount temporary storage (root level, chmod), one-shot
   - encoder_client.sh starts modbus comunication

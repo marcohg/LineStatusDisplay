@@ -37,7 +37,7 @@ product: Clocks v14.0
 processor: MK22FN256xxx12
 package_id: MK22FN256VLH12
 mcu_data: ksdk2_0
-processor_version: 16.2.0
+processor_version: 16.3.0
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -359,16 +359,16 @@ void BOARD_BootClockVLPR(void)
 name: BOARD_BootClockHSRUN
 called_from_default_init: true
 outputs:
-- {id: Bus_clock.outFreq, value: 33.1776 MHz}
-- {id: Core_clock.outFreq, value: 33.1776 MHz}
-- {id: Flash_clock.outFreq, value: 11.0592 MHz}
+- {id: Bus_clock.outFreq, value: 24 MHz}
+- {id: Core_clock.outFreq, value: 24 MHz}
+- {id: Flash_clock.outFreq, value: 8 MHz}
 - {id: LPO_clock.outFreq, value: 1 kHz}
-- {id: MCGFFCLK.outFreq, value: 345.6 kHz}
+- {id: MCGFFCLK.outFreq, value: 250 kHz}
 - {id: MCGIRCLK.outFreq, value: 32.768 kHz}
-- {id: OSCERCLK.outFreq, value: 11.0592 MHz}
-- {id: OSCERCLK_UNDIV.outFreq, value: 11.0592 MHz}
-- {id: PLLFLLCLK.outFreq, value: 66.3552 MHz}
-- {id: System_clock.outFreq, value: 33.1776 MHz}
+- {id: OSCERCLK.outFreq, value: 8 MHz}
+- {id: OSCERCLK_UNDIV.outFreq, value: 8 MHz}
+- {id: PLLFLLCLK.outFreq, value: 48 MHz}
+- {id: System_clock.outFreq, value: 24 MHz}
 settings:
 - {id: MCGMode, value: PEE}
 - {id: CLKOUTConfig, value: 'yes'}
@@ -395,7 +395,7 @@ settings:
 - {id: SIM.USBFRAC.scale, value: '1', locked: true}
 - {id: USBClkConfig, value: 'yes'}
 sources:
-- {id: OSC.OSC.outFreq, value: 11.0592 MHz, enabled: true, uiValue: 11.05... MHz}
+- {id: OSC.OSC.outFreq, value: 8 MHz, enabled: true}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
 
@@ -427,7 +427,7 @@ const sim_clock_config_t simConfig_BOARD_BootClockHSRUN =
     };
 const osc_config_t oscConfig_BOARD_BootClockHSRUN =
     {
-        .freq = 11059200U,                        /* Oscillator frequency: 11059200Hz */
+        .freq = 8000000U,                         /* Oscillator frequency: 8000000Hz */
         .capLoad = (OSC_CAP0P),                   /* Oscillator capacity load: 0pF */
         .workMode = kOSC_ModeOscLowPower,         /* Oscillator low power */
         .oscerConfig =

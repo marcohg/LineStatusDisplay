@@ -113,7 +113,7 @@ void PIT_CHANNEL_1_IRQHANDLER(void) {
 
   /* Place your code here */
   static uint16_t runtime_rate;
-  if(++runtime_rate >= 1000) {
+  if(++runtime_rate >= 100) { // 0.1 sec ticks
     runtime_rate = 0;
     ++run_time;
   }

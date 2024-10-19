@@ -1,6 +1,6 @@
 #! /bin/bash
 # Simple CLI to compile main.cpp
-_DST="../../boot"
+_DST="/usr/local/sbin"
 _EXE=encoder_client
 
 echo 

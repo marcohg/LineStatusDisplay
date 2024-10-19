@@ -10,7 +10,7 @@ product: Peripherals v15.0
 processor: MK22FN256xxx12
 package_id: MK22FN256VLH12
 mcu_data: ksdk2_0
-processor_version: 16.2.0
+processor_version: 16.3.0
 functionalGroups:
 - name: BOARD_InitPeripherals
   UUID: b416cb72-337f-413f-ba12-8c1f0ea0616f
@@ -201,9 +201,9 @@ const pit_config_t PIT_config = {
 static void PIT_init(void) {
   /* Initialize the PIT. */
   PIT_Init(PIT_PERIPHERAL, &PIT_config);
-  /* Set channel 0 period to 5 ms (165888 ticks). */
+  /* Set channel 0 period to 5 ms (120000 ticks). */
   PIT_SetTimerPeriod(PIT_PERIPHERAL, PIT_CHANNEL_0, PIT_CHANNEL_0_TICKS);
-  /* Set channel 1 period to 1 ms (33178 ticks). */
+  /* Set channel 1 period to 1 ms (24000 ticks). */
   PIT_SetTimerPeriod(PIT_PERIPHERAL, PIT_CHANNEL_1, PIT_CHANNEL_1_TICKS);
   /* Enable interrupts from channel 0. */
   PIT_EnableInterrupts(PIT_PERIPHERAL, PIT_CHANNEL_0, kPIT_TimerInterruptEnable);

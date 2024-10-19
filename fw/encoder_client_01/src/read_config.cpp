@@ -66,6 +66,12 @@ void ReadConfiguration(const char *fname, node_t *node, config_t *cfg, const int
       cfg->serial_port = v1;
     if (n.find("baud") != std::string::npos)
       cfg->baud = std::stoi(v1);
+    if (n.find("poll_rate_ms") != std::string::npos)
+      cfg->poll_rate = std::stoi(v1);
+    if (n.find("timeout_ms") != std::string::npos)
+      cfg->timeout_ms = std::stoi(v1);
+
+
   }
   infile.close();
 //      std::cout << "Slave: " << mb_address << ", port: " << serial_port << ", baud: "  << baud << "\n";

@@ -23,7 +23,7 @@ typedef struct config_tab {
   std::string serial_port;
   uint32_t baud;
   uint32_t poll_rate;
-  uint32_t timeout;
+  uint32_t timeout_ms;
 } config_t;
 
 typedef struct line_data_tag {
