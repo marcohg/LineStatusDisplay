@@ -6,8 +6,8 @@ defaults = {
   # Encoder Client
   "port" : "/dev/ttyUSB0",
   "baud" : 115200, # 57200, 38400, 19200],
-  "poll_rate_ms" : 250,
-  "timeout_ms"  : 200,
+  "poll_rate_ms" : 100,
+  "timeout_ms"  : 500,
   "nodes" : [ # Upto 4 nodes
     {
       "address" : 2, "time_base_ms" : 1000
@@ -17,7 +17,7 @@ defaults = {
   "status_file": "/mnt/tmp/encoder_client.status",
   
   # GUI Settings
-  "gui_sleep_sec" : 2.5
+  "gui_sleep_sec" : 0.25
 }
 
 def GetConfiguration( file_name) :

@@ -2,6 +2,10 @@
 #include <fstream>
 #include "globals.h"
 #include "c_modbus.h"
+#include <chrono>
+#include <thread>
+#include <sstream>
+#include <ctime>
 
 
 void ReadConfiguration(const char *fname, node_t *line, config_t *cfg, const int nn);
@@ -19,21 +23,10 @@ config_t cfg = {
     .timeout_ms  = 100
 };
 
-#include <chrono>
-#include <thread>
-//#include <unistd.h>
-
-
-
-
 int main(int argc, char *argv[]) {
   line_data_t line1;
-//  uint32_t timeout_default = cfg.timeout;
+
   ReadConfiguration("/mnt/tmp/encoder_client.cfg", nodes, &cfg, max_nodes); // wait for file
-//  if(cfg.timeout != timeout_default) {
-//
-//  }
-//
 
   c_modbus line_encoder;  // create the object using cfg
   if (line_encoder.memory_error) {
@@ -51,20 +44,24 @@ int main(int argc, char *argv[]) {
     //  - run: communicate all connected (active) nodes
     //  - service: connect, configure
     if (line_encoder.GetData(0, line1)) {
+
+      // Output
+      std::stringstream str_out;
+      std::time_t now = std::time(nullptr);  // secs since epoch
       float hz = (float) line1.delta_counts * 1000 / 4 / nodes[0].time_base;
-      // std::cout
-      std::cout << line1.status << "," << line1.run_time << "," << line1.total_counts << "," << line1.delta_counts
-          << "," << hz << "\n";
-      // Regenerate a new file every 10 lines
+      // time_t, status, node time ticks, counts, delta counts, hz
+      str_out << now << "," << line1.status << "," << line1.run_time << "," << line1.total_counts << ","
+              << line1.delta_counts << "," << hz << "\n";
+
       static uint32_t lines_written = 0;
       std::ios_base::openmode open_mode = std::ios_base::app; // append to file
-      if(++lines_written > 10 ) {
-        open_mode = std::ios_base::out;   // regenerate the file
+      if(++lines_written > 100) {
         lines_written = 0;
+        open_mode = std::ios_base::out; // create a new file
       }
+      std::cout << str_out.str();
       out.open(status_file, open_mode);
-      out << line1.status << "," << line1.run_time << "," << line1.total_counts << "," << line1.delta_counts
-                      << "," << hz << "\n";
+      out << str_out.str();
       out.close();
 
     }
@@ -73,11 +70,4 @@ int main(int argc, char *argv[]) {
     std::this_thread::sleep_for(std::chrono::milliseconds(cfg.poll_rate));
 //    sleep(0.5);
   }
-//
-////    TestModbusEncoder(cfg.serial_port.c_str());
-//  }
-//  else {
-//    return read_config;
-//  }
-//  // test c_modbus destructor
 }

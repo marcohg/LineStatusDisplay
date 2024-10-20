@@ -6,6 +6,7 @@
 
 # Any eclipse 
 **/.settings/language.settings.xml
+__pycache__
 
 #doxy
 /doc/html
