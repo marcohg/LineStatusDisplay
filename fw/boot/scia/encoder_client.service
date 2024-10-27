@@ -1,0 +1,13 @@
+[Unit]
+Description=Start the Encoder Client using Modbus
+After=graphical.target
+#After=encoder_gui.service
+Wants=graphical.target
+
+[Service]
+User=scia
+Group=scia
+ExecStart=/usr/local/sbin/encoder_client
+
+[Install]
+WantedBy=graphical.target

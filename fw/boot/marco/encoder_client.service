@@ -5,10 +5,9 @@ After=graphical.target
 Wants=graphical.target
 
 [Service]
-User=pi
-Group=pi
-#ExecStartPre=/usr/bin/printenv
-ExecStart=/usr/local/sbin/encoder_client.sh
+User=marco
+Group=marco
+ExecStart=/usr/local/sbin/encoder_client
 
 [Install]
 WantedBy=graphical.target

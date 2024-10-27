@@ -35,15 +35,15 @@ def GetConfiguration( file_name) :
 
 def CreateEClientConfiguration ( c ) :
   """Create Encoder Client Config (Starts Modbus)"""
-  print (f"Create { c["config_file"] } file" )
-  str =  f"port {c["port"]}\n"
-  str += f"baud {c["baud"]}\n"
-  str += f"poll_rate_ms {c["poll_rate_ms"]}\n"
-  str += f"timeout_ms {c["timeout_ms"]}\n"
+  print (f"Create { c['config_file'] } file" )
+  str =  f"port {c['port']}\n"
+  str += f"baud {c['baud']}\n"
+  str += f"poll_rate_ms {c['poll_rate_ms']}\n"
+  str += f"timeout_ms {c['timeout_ms']}\n"
   str += "-- Node Address Time_base_ms\n"
   n = 1
   for node in c["nodes"] :
-    str += f"Node	{n} {node["address"]} {node["time_base_ms"]} \n"
+    str += f"Node	{n} {node['address']} {node['time_base_ms']} \n"
     n += 1
   str += "--end--\n"
   path = Path(c["config_file"])

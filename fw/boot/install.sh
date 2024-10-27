@@ -1,42 +1,19 @@
 #!/usr/bin/bash
 
-#  Verify SU
-if [ ! $USER == root ]; then
-echo Run as root
-exit 1
-fi
-
-# Copying scripts
-_DST_SBIN="/usr/local/sbin"
 _DST_SYSTEMD="/etc/systemd/system"
-echo
-echo "Entering 'bash/'..."
-cd bash
-_SHS=$(ls *.sh)
-
-echo "Copying "$_SHS "scripts to "$_DST_SBIN
-cp $(ls *.sh) $_DST_SBIN
-
-echo Chmod to allow all users to r/w and eXecute
-for i in $_SHS; do
-chmod 777 $_DST_SBIN/$i
-done
-echo exiting  'bash/'..
-cd ..
+ORIG_USER=$(logname)
 
 echo
-echo "-- systemd services --"
-echo "Entering 'systemd/'..."
-cd systemd
+echo "Entering $ORIG_USER folder... "
+cd $ORIG_USER
 _SERVICES="$(ls *.service)"
-echo  "Do manually the following: "
-echo "1. remove desired service, if already installed"
-echo "2. copy [sudo] $_SERVICES to $_DST_SYSTEMD"
-echo "3. Use systemctl enable [service] and reboot"
-echo "Exiting 'systemd/'..."
 
+echo "copy $_SERVICES to $_DST_SYSTEMD and 'systemctl enable' it"
+for i in $_SERVICES; do
+  sudo cp $i $_DST_SYSTEMD
+  sudo systemctl enable $i
+done
 
-echo
-echo "Install complete"
-exit 0
-
+echo Exiting $ORIG_USER ...
+cd ..
+echo Installation complete - reboot target to verify...

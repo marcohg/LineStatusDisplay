@@ -1,28 +1,28 @@
-
-# 2. Monitor EC_STATUS=/mnt/tmp/encoder_client.status
-# This file is open/write/close by encoder_client
 import os
 from pathlib import Path
 from manage_cfg import GetConfiguration, CreateEClientConfiguration
 import time
 import re
-import sys
+
 
 def GetArgs(str, argc) :
   """Get argc in str arg1,arg2,..,argc"""
   list = []
+  nbr = 0
   for n in range(argc) :
     argr = re.match(r'[+-]*[0-9]+\.*[0-9]*,*',str)
     if argr :
       arg = argr.group().rstrip(',')
       str = str[argr.end():]
       list.append(arg)
-  return list
+      nbr += 1
+  return nbr, list
 
-print(sys.argv)
-cfg_file = sys.argv[1]+ "/configuration.json"
 
-cfg = GetConfiguration(cfg_file)
+
+# configuration.json at home folder
+c = os.environ['HOME'] + "/" + "configuration.json"
+cfg = GetConfiguration(c)
 CreateEClientConfiguration(cfg)
 
 # Read the encoder_client status file 
@@ -37,8 +37,12 @@ while not stop_signal :
       stop_signal = True
 
     # 1729395360,0,-91473,139639,0,0,
-    args = GetArgs(lines.pop(),6) # from last one
-    print(f"{args[2]}, { args[3] }, { args[4] },  { args[5] }")
+    last_line = lines.pop()
+    n, args = GetArgs(last_line,6) # from last one
+    if n == 6 :
+      print(f"{args[2]}, { args[3] }, { args[4] },  { args[5] }")
+    else :
+      print(f"Received: { last_line }")
     # else :
     #   for line in lines :
     #     print(line)
@@ -50,10 +54,3 @@ while not stop_signal :
 
 print(lines)
 print( "Done!")
-
-
-
-
-
-
-

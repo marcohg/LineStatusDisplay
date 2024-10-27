@@ -1,0 +1,13 @@
+[Unit]
+Description=Line Status Display - marco, RP5
+After=graphical.target
+Wants=graphical.target
+
+[Service]
+Type=simple
+User=marco
+Group=marco
+ExecStart=/usr/bin/python3 /home/marco/LineStatusDisplay/fw/gui/encoder_gui.py
+
+[Install]
+WantedBy=graphical.target

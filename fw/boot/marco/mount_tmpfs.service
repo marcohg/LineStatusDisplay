@@ -1,0 +1,11 @@
+[Unit]
+Description=Mount point temporary storage 
+
+[Service]
+# commands
+Type=oneshot
+ExecStart=/bin/bash -c "mkdir -p /mnt/tmp && mount -t tmpfs -o size=20m tmpfs /mnt/tmp && chown scia:scia /mnt/tmp && touch /mnt/tmp/auto-mnt-done"
+
+[Install]
+WantedBy=graphical.target
+

@@ -1,0 +1,13 @@
+[Unit]
+Description=Line Status Display - scia, RP5
+After=graphical.target
+Wants=graphical.target
+
+[Service]
+Type=simple
+User=scia
+Group=scia
+ExecStart=/usr/bin/python3 /home/scia/LineStatusDisplay/fw/gui/encoder_gui.py
+
+[Install]
+WantedBy=graphical.target
