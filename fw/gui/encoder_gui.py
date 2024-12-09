@@ -64,13 +64,17 @@ class StatusFrame(tk.Frame):
 class Application(tk.Tk):
   """Line Display root window"""
   def __init__(self, *args, **kwargs):
+    if os.environ.get('DISPLAY','') == '':
+      print('no display found. Using :0.0')
+      os.environ.__setitem__('DISPLAY', ':0.0')
+    
     super().__init__(*args, **kwargs) # self = tk.Tk
-
-    # c = os.environ['HOME'] + "/" + "configuration.json" # configuration.json at home folder
-    c = "configuration.json"
+    c = os.environ['HOME'] + "/" + "configuration.json" # configuration.json at home folder
+    # c = "configuration.json" - HOME+?
     self.cfg = GetConfiguration(c)
     CreateEClientConfiguration(self.cfg)
-    print (self.cfg)
+    # print (self.cfg)
+
 
     fonts = {
       'title': font.Font( family='Anta', size=30, weight='bold', slant='roman', underline=False, overstrike=False ),
