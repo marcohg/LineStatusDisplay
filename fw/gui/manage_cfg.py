@@ -1,8 +1,13 @@
-# Manage Line Display Global Settings
+"""Manage Line Display Files
+  - Read/Create the Global Configuration (json)
+  - Create the encoder client configuration on volatile TMP folder
+"""
 from pathlib import Path
 import json
 
-defaults = {
+def Defaults() :
+  """Default Values when no existing Configuration"""
+  return {
   # Encoder Client
   "port" : "/dev/ttyUSB0",
   "baud" : 115200, # 57200, 38400, 19200],
@@ -10,14 +15,17 @@ defaults = {
   "timeout_ms"  : 500,
   "nodes" : [ # Upto 4 nodes
     {
-      "address" : 2, "time_base_ms" : 1000
+      "address" : 2, 
+      "time_base_ms" : 1000,  # speed in pulses per time_base (example Hz) 
+      "speed_factor" : 0.5,    # speed_time_base to eng units
+      "length_factor" : 0.001 # pulses to total length
     }
   ],
   "config_file": "/mnt/tmp/encoder_client.cfg",
   "status_file": "/mnt/tmp/encoder_client.status",
   
   # GUI Settings
-  "gui_sleep_sec" : 0.25
+  "gui_sleep_ms" : 250
 }
 
 def GetConfiguration( file_name) :
@@ -27,7 +35,7 @@ def GetConfiguration( file_name) :
     content = path.read_text()
     configuration = json.loads(content)
   else :
-    configuration = defaults
+    configuration = Defaults()
     content = json.dumps(configuration, indent=2)
     path.write_text(content) 
   return configuration
@@ -49,12 +57,6 @@ def CreateEClientConfiguration ( c ) :
   path = Path(c["config_file"])
   path.write_text(str)
 
-
-
-
-# configuration = get_configuration("configuration.json")
-# print(json.dumps(configuration, indent=2))
-
 # # with open("data.json", mode="w", encoding="utf-8") as write_file :
 # #   json.dump(defaults, write_file, indent=2)
 
@@ -66,5 +68,9 @@ def CreateEClientConfiguration ( c ) :
 # # print( json.dumps(line_encoder_edited,indent=2) )
 # for node in line_encoder_edited["nodes"] :
 #   print(node)
+
+
+if __name__ == "__main__":
+  print(GetConfiguration('/home/marco/Downloads/eraseme.json'))
 
 

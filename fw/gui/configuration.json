@@ -1,0 +1,17 @@
+{
+  "port": "/dev/ttyUSB0",
+  "baud": 115200,
+  "poll_rate_ms": 100,
+  "timeout_ms": 500,
+  "nodes": [
+    {
+      "address": 2,
+      "time_base_ms": 1000,
+      "speed_factor": 0.5,
+      "length_factor": 0.5
+    }
+  ],
+  "config_file": "/mnt/tmp/encoder_client.cfg",
+  "status_file": "/mnt/tmp/encoder_client.status",
+  "gui_sleep_ms": 250
+}
